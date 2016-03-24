@@ -2,7 +2,7 @@
 backtracking */
 #include<stdio.h>
 
-// Maze size
+// Maze size (:
 #define N 4 
 
 bool solveMazeUtil(int maze[N][N], int x, int y, int sol[N][N],int xa[2],int ya[2]);
