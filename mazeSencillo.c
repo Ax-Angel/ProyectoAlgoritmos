@@ -1,5 +1,4 @@
-/* C/C++ program to solve Rat in a Maze problem using
-backtracking */
+/*Tama se la come xD/
 #include<stdio.h>
 
 // Maze size (:
