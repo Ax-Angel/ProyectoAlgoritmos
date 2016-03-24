@@ -1,4 +1,4 @@
-/*Tama se la come xD/
+/*Tama se la come  entera xD/
 #include<stdio.h>
 
 // Maze size (:
