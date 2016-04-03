@@ -1,2 +1,0 @@
-# ProyectoAlgoritmos
-Proyectos de Algoritmos
