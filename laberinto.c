@@ -7,18 +7,34 @@ int resolver(Pila *s, int f, int c  );
 int resolverVerbose(Pila *s, int f, int c);
 void direccionarArchivo(Pila *s);
 
+#define fila 10
+#define columna 10
+int posic[fila][columna] =
+   { { 'X','X','X','X','X','X','X','X','X','X'},
+     { 'X',' ',' ','X',' ','X',' ',' ',' ','X'},
+     { 'X',' ',' ','X',' ',' ',' ','X',' ','X'},
+     { 'X',' ',' ',' ',' ','X','X','X',' ','X'},
+     { 'X',' ','X','X','X','X',' ',' ',' ','X'},
+     { 'X',' ',' ',' ','X',' ',' ','X','X','X'},
+     { 'X',' ','X','X','X','X',' ','X',' ','X'},
+     { 'X',' ','X',' ',' ',' ',' ',' ',' ','X'},
+     { 'X',' ','X',' ','X','X','X','X',' ','X'},
+     { 'X','X','X',' ','X','X','X','X','X','X'}
+   };
+
+   
 int main(int argc, char const *argv[])
 {
 	Pila *s;
 	Pila_Init(s);
 
-	if(argv[1]=='v'){
-		if(resolverVerbose(s, atoi(argv[2]), atoi(argv[3])))
+	if(argv[2]=='v'){
+		if(resolverVerbose(s, atoi(argv[3]), atoi(argv[4])))
 			printf("\n\nLaberinto Resuelto!!");
 		else
 			printf("\n\nNo se encontro salida ;-;");
 	}else{
-		if(resolver(s, atoi(argv[1]), atoi(argv[2])))
+		if(resolver(s, atoi(argv[2]), atoi(argv[3])))
 			printf("\n\nLaberinto Resuelto!!");
 		else
 			printf("\n\nNo se encontro salida ;-;");
@@ -58,19 +74,19 @@ int resolver(Pila *s, int f, int c  ){
     if( f == 0 || c ==0  || f==fila-1 || c == columna-1 ){//si se esta al borde del arreglo, se encuentra la salida
         return 1; 
     }// se prueban las opciones de dirección (arriba, derecha, abajo, izquierda)
-    if( posic[f-1][c]=='0'){
+    if( posic[f-1][c]==' '){
         if( resolver(f-1,c)==1 )
             return 1;
     }
-    if( posic[f][c+1]=='0'){
+    if( posic[f][c+1]==' '){
         if( resolver(f,c+1)==1 )//se vuelve a llamar la funcion con un cambio en el parámetro
             return 1;
     }
-    if( posic[f+1][c]=='0'){
+    if( posic[f+1][c]==' '){
         if( resolver(f+1,c)==1 )
             return 1;
     }
-    if( posic[f][c-1]=='0'){
+    if( posic[f][c-1]==' '){
         if( resolver(f,c-1)==1 )//si se llega al final el valor de retorno es 1, de lo contrario se encerró y el valor es 0
             return 1;
     }
@@ -87,19 +103,19 @@ int resolverVerbose(Pila *s, int f, int c){
     if( f == 0 || c ==0  || f==fila-1 || c == columna-1 ){//si se esta al borde del arreglo, se encuentra la salida
         return 1; 
     }// se prueban las opciones de dirección (arriba, derecha, abajo, izquierda)
-    if( posic[f-1][c]=='0'){
+    if( posic[f-1][c]==' '){
         if( resolver(f-1,c)==1 )
             return 1;
     }
-    if( posic[f][c+1]=='0'){
+    if( posic[f][c+1]==' '){
         if( resolver(f,c+1)==1 )//se vuelve a llamar la funcion con un cambio en el parámetro
             return 1;
     }
-    if( posic[f+1][c]=='0'){
+    if( posic[f+1][c]==' '){
         if( resolver(f+1,c)==1 )
             return 1;
     }
-    if( posic[f][c-1]=='0'){
+    if( posic[f][c-1]==' '){
         if( resolver(f,c-1)==1 )//si se llega al final el valor de retorno es 1, de lo contrario se encerró y el valor es 0
             return 1;
     }
