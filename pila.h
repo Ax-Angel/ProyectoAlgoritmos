@@ -20,21 +20,21 @@ void Pila_Init(Pila *S)
     S->size = 0;
 }
 
-/*int Pila_Top(Pila *S)
+int Pila_Top(Pila *S)
 {
     if (S->size == 0) {
         fprintf(stderr, "Error: Pila vacia\n");
         return -1;
     } 
 
-    return S->data[S->size-1];
-}*/
+    return 1;
+}
 
 void Push(Pila *S, int f, int c)
 {
     if (S->size < STACK_MAX){
-        S->x[S->size++] = c;
-        S->y[S->size++] = f;
+        S->x[S->size++] = f;
+        S->y[S->size++] = c;
     }
     else
         fprintf(stderr, "Error: Pila llena\n");
@@ -45,7 +45,7 @@ void Pop(Pila *S)
     if (S->size == 0)
         fprintf(stderr, "Error: Pila vacia\n");
     else{
-    	printf("%d   %d",x[S->size], y[S->size]);
+    	fprintf("   %d   %d,",x[S->size], y[S->size]);
     	S->size--;
     }
 }

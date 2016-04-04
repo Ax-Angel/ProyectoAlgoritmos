@@ -3,20 +3,22 @@
 
 void delay (int seg);
 void imprime();
-int resolver(int f, int c  );
-int resolverVerbose(int f, int c);
-void leer(FILE *f);
-void direccionarArchivo();
+int resolver(Pila *s, int f, int c  );
+int resolverVerbose(Pila *s, int f, int c);
+void direccionarArchivo(Pila *s);
 
 int main(int argc, char const *argv[])
 {
+	Pila *s;
+	Pila_Init(s);
+
 	if(argv[1]=='v'){
-		if(resolverVerbose())
+		if(resolverVerbose(s, atoi(argv[2]), atoi(argv[3])))
 			printf("\n\nLaberinto Resuelto!!");
 		else
 			printf("\n\nNo se encontro salida ;-;");
 	}else{
-		if(resolver())
+		if(resolver(s, atoi(argv[1]), atoi(argv[2])))
 			printf("\n\nLaberinto Resuelto!!");
 		else
 			printf("\n\nNo se encontro salida ;-;");
@@ -49,8 +51,9 @@ void imprime() {
    return;
 }
 
-int resolver(int f, int c  ){
+int resolver(Pila *s, int f, int c  ){
 	posic[f][c]='*';
+	Push(s, f, c);
 
     if( f == 0 || c ==0  || f==fila-1 || c == columna-1 ){//si se esta al borde del arreglo, se encuentra la salida
         return 1; 
@@ -72,11 +75,13 @@ int resolver(int f, int c  ){
             return 1;
     }
     posic[f][c]='*';
+    direccionarArchivo(s);
     return 0; //Se quedó encerrado, no hay salida
 }
 
-int resolverVerbose(int f, int c){
+int resolverVerbose(Pila *s, int f, int c){
 	posic[f][c]='*';
+	Push(s, f, c);
     imprime();
 
     if( f == 0 || c ==0  || f==fila-1 || c == columna-1 ){//si se esta al borde del arreglo, se encuentra la salida
@@ -99,5 +104,17 @@ int resolverVerbose(int f, int c){
             return 1;
     }
     posic[f][c]='*';
+    direccionarArchivo(s);
     return 0; //Se quedó encerrado, no hay salida
+}
+
+void direccionarArchivo(Pila *s){
+	FILE *f;
+	f=fopen(salida.txt, "+w");
+
+	while(Pila_Top(s)!=-1){
+		Pop(s);
+	}
+
+	fclose(f);
 }
