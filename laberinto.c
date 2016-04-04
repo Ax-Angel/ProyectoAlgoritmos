@@ -9,7 +9,7 @@ void guardaLaberinto();
 
 FILE *f;
 int i,j,ene=0,eme=0;
-char **matriz1,c;
+char **posic,c;
 
 void delay (int seg);
 void imprime();
@@ -61,8 +61,8 @@ void imprime() {
    	int i, j;
 	delay(1);
    	system("clear");
-   	for (i=0; i<fila; i++) {
-     	for (j=0; j<columna; j++) {
+   	for (i=0; i<ene; i++) {
+     	for (j=0; j<eme; j++) {
         	 printf("%c ", posic[i][j]);
     	  }
      	printf("\n");
@@ -71,59 +71,59 @@ void imprime() {
 }
 
 int resolver(Nodo *s, int f, int c  ){
-	 posic[f][c]='O';
+	 posic[f][c]='x';
 	 push(crearNodo(f, c));
 
-    if( f == 0 || c ==0  || f==fila-1 || c == columna-1 ){//si se esta al borde del arreglo, se encuentra la salida
+    if( f == 0 || c ==0  || f==ene-1 || c == eme-1 ){//si se esta al borde del arreglo, se encuentra la salida
         return 1; 
     }// se prueban las opciones de dirección (arriba, derecha, abajo, izquierda)
-    if( posic[f-1][c]==' '){
+    if( posic[f-1][c]=='0'){
         if( resolver(s,f-1,c)==1 )
             return 1;
     }
-    if( posic[f][c+1]==' '){
+    if( posic[f][c+1]=='0'){
         if( resolver(s,f,c+1)==1 )//se vuelve a llamar la funcion con un cambio en el parámetro
             return 1;
     }
-    if( posic[f+1][c]==' '){
+    if( posic[f+1][c]=='0'){
         if( resolver(s,f+1,c)==1 )
             return 1;
     }
-    if( posic[f][c-1]==' '){
+    if( posic[f][c-1]=='0'){
         if( resolver(s,f,c-1)==1 )//si se llega al final el valor de retorno es 1, de lo contrario se encerró y el valor es 0
             return 1;
     }
-    posic[f][c]='O';
+    posic[f][c]='x';
     push(crearNodo(f, c));
     	direccionarArchivo(s);
     return 0; //Se quedó encerrado, no hay salida
 }
 
 int resolverVerbose(Nodo *s, int f, int c){
-	posic[f][c]='O';
+	posic[f][c]='x';
 	push(crearNodo(f, c));
     imprime();
 
-    if( f == 0 || c ==0  || f==fila-1 || c == columna-1 ){//si se esta al borde del arreglo, se encuentra la salida
+    if( f == 0 || c ==0  || f==ene-1 || c == eme-1 ){//si se esta al borde del arreglo, se encuentra la salida
         return 1; 
     }// se prueban las opciones de dirección (arriba, derecha, abajo, izquierda)
-    if( posic[f-1][c]==' '){
+    if( posic[f-1][c]=='0'){
         if( resolverVerbose(s,f-1,c)==1 )
             return 1;
     }
-    if( posic[f][c+1]==' '){
+    if( posic[f][c+1]=='0'){
         if( resolverVerbose(s,f,c+1)==1 )//se vuelve a llamar la funcion con un cambio en el parámetro
             return 1;
     }
-    if( posic[f+1][c]==' '){
+    if( posic[f+1][c]=='0'){
         if( resolverVerbose(s,f+1,c)==1 )
             return 1;
     }
-    if( posic[f][c-1]==' '){
+    if( posic[f][c-1]=='0'){
         if( resolverVerbose(s,f,c-1)==1 )//si se llega al final el valor de retorno es 1, de lo contrario se encerró y el valor es 0
             return 1;
     }
-    posic[f][c]='O';
+    posic[f][c]='x';
     push(crearNodo(f, c));
     direccionarArchivo(s);
     return 0; //Se quedó encerrado, no hay salida
@@ -139,9 +139,6 @@ void direccionarArchivo(Nodo *s){
 	fclose(a);
 }
 
-FILE *f;
-int i,j,ene=0,eme=0;
-char **matriz1,c;
 
 void cualDimension(){
     f= fopen(archivo,"r");
@@ -181,7 +178,7 @@ void guardaLaberinto(){
         c = fgetc(f);
 
             if (c=='0' ||  c=='1'){
-                *(*(matriz1+ene)+eme)=c;
+                *(*(posic+ene)+eme)=c;
                 eme++;
             }else if(c=='\n'){
                 eme=0;
