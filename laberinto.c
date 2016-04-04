@@ -1,7 +1,15 @@
 #include "pila.h"
-#include <stdio.h>
 #include <time.h>
 #include <string.h>
+#define archivo "ejemploLaberinto1.txt"
+
+void cualDimension();
+char **creaMatriz(int ene, int eme);
+void guardaLaberinto();
+
+FILE *f;
+int i,j,ene=0,eme=0;
+char **matriz1,c;
 
 void delay (int seg);
 void imprime();
@@ -9,23 +17,14 @@ int resolver(Nodo *s, int f, int c  );
 int resolverVerbose(Nodo *s, int f, int c);
 void direccionarArchivo(Nodo *s);
 
-#define fila 10
-#define columna 10
-int posic[fila][columna] =
-   { { 'X','X','X','X','X','X','X','X','X','X'},
-     { 'X',' ',' ','X',' ','X',' ',' ',' ','X'},
-     { 'X',' ',' ','X',' ',' ',' ','X',' ','X'},
-     { 'X',' ',' ',' ',' ','X','X','X',' ','X'},
-     { 'X',' ','X','X','X','X',' ',' ',' ','X'},
-     { 'X',' ',' ',' ','X',' ',' ','X','X','X'},
-     { 'X',' ','X','X','X','X',' ','X',' ','X'},
-     { 'X',' ','X',' ',' ',' ',' ',' ',' ','X'},
-     { 'X',' ','X',' ','X','X','X','X',' ','X'},
-     { 'X','X','X',' ','X','X','X','X','X','X'}
-   };
-
 int main(int argc, char const *argv[])
 {
+    cualDimension();
+    posic=creaMatriz(ene,ene);
+    guardaLaberinto();
+
+    eme=ene;
+
 	Nodo *s;
 	char ch[1];
 	strcpy(ch, argv[1]);
@@ -131,12 +130,65 @@ int resolverVerbose(Nodo *s, int f, int c){
 }
 
 void direccionarArchivo(Nodo *s){
-	FILE *f;
+	FILE *a;
 	f=fopen("salida.txt", "wb");
 
-	while(ELEMENTOS!=0){
-		pop(f);
+	while(pop(a)!=0){
 	}
 
-	fclose(f);
+	fclose(a);
+}
+
+FILE *f;
+int i,j,ene=0,eme=0;
+char **matriz1,c;
+
+void cualDimension(){
+    f= fopen(archivo,"r");
+    ene=1;
+    if(f==0){
+        printf("No es posible leer el archivo.\n");
+        return;
+    }
+    
+    while(!feof(f)){
+        do{
+        c = fgetc(f);
+            if(c=='\n'){
+                ene++;
+            }
+        }while(c!=EOF);
+    }   
+    fclose(f);
+}
+
+char **creaMatriz(int ene, int eme){
+    char **ap,i;
+    ap=(char**)malloc(ene*sizeof(char*));
+
+    for(i=0;i<ene;i++){
+        ap[i]=(char*)malloc(eme*sizeof(char));
+    }
+    return ap;
+}
+
+void guardaLaberinto(){
+    ene=0;
+    f= fopen(archivo,"r");
+
+    while(!feof(f)){
+        do{
+        c = fgetc(f);
+
+            if (c=='0' ||  c=='1'){
+                *(*(matriz1+ene)+eme)=c;
+                eme++;
+            }else if(c=='\n'){
+                eme=0;
+                ene++;
+            }
+    
+        }while(c!=EOF);
+    }
+    fclose(f);
 }

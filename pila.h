@@ -36,9 +36,9 @@ enum boolean push(Nodo* nodo){
      }
 }
 
-enum boolean pop(FILE *f){
+int pop(FILE *f){
      if(tope==NULL)
-          return false;
+          return 0;
      else{
           Nodo* tmp;
           tmp=tope;
@@ -46,7 +46,7 @@ enum boolean pop(FILE *f){
           tmp->ap=NULL;          
           ELEMENTOS--;
           fprintf(f,"%d   %d,",tmp->x, tmp->y);
-          return true;
+          return 1;
      }
 }
 
