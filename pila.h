@@ -1,21 +1,53 @@
-#ifndef PILA_H_INCLUDED
-#define PILA_H_INCLUDED
+#ifndef PILA_H_
+#define PILA_H_
 
 #include <stdio.h>
 #include <stdlib.h>
 
-#define STACK_MAX 100
+#define MAXIMO 100
+int ELEMENTOS = 0;
 
-struct Pila {
-    int     x[STACK_MAX];
-    int     y[STACK_MAX];
-    int     size;
-};
-typedef struct Pila Pila;
+enum boolean {false,true};
 
-void Pila_Init(Pila *S);
-int Pila_Top(Pila *S);
-void Push(Pila *S, int f, int c);
-void Pop(Pila *S, FILE *f);
+typedef struct Nodo{
+     int x;
+     int y;
+     struct Nodo* ap;
+}Nodo;
+
+Nodo* tope=NULL;
+
+Nodo* crearNodo(int f, int c){
+     Nodo* nuevo= (Nodo *)malloc(sizeof(Nodo));
+     nuevo->ap=NULL;
+     nuevo->x=f;
+     nuevo->y=c;
+     return nuevo;
+}
+
+enum boolean push(Nodo* nodo){
+     if(ELEMENTOS==MAXIMO)
+          return false;
+     else{
+          nodo->ap=tope;
+          tope=nodo;
+          ELEMENTOS++;
+          return true;
+     }
+}
+
+enum boolean pop(FILE *f){
+     if(tope==NULL)
+          return false;
+     else{
+          Nodo* tmp;
+          tmp=tope;
+          tope=tope->ap;
+          tmp->ap=NULL;          
+          ELEMENTOS--;
+          fprintf(f,"%d   %d,",tmp->x, tmp->y);
+          return true;
+     }
+}
 
 #endif // PILA_H_
