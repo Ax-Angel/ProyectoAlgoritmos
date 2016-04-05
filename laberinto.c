@@ -1,7 +1,7 @@
 #include "pila.h"
 #include <time.h>
 #include <string.h>
-#define archivo "ejemploLaberinto1.txt"
+#define archivo "ejemploMediano.txt"
 
 void cualDimension();
 char **creaMatriz(int ene, int eme);
@@ -13,9 +13,9 @@ char **posic,c;
 
 void delay (int seg);
 void imprime();
-int resolver(Nodo *s, int f, int c  );
-int resolverVerbose(Nodo *s, int f, int c);
-void direccionarArchivo(Nodo *s);
+int resolver(int f, int c  );
+int resolverVerbose(int f, int c);
+void direccionarArchivo();
 
 int main(int argc, char const *argv[])
 {
@@ -25,24 +25,22 @@ int main(int argc, char const *argv[])
 
     eme=ene;
 
-	Nodo *s;
 	char ch[1];
 	strcpy(ch, argv[1]);
 
 	if(ch[0]=='v'){
-		push(crearNodo(atoi(argv[2]), atoi(argv[3])));
-		if(resolverVerbose(s, atoi(argv[2]), atoi(argv[3])))
+		if(resolverVerbose(atoi(argv[2]), atoi(argv[3])))
 			printf("\n\nLaberinto Resuelto!!\n");
 		else
 			printf("\n\nNo se encontro salida ;-;\n");
 	}else{
-		push(crearNodo(atoi(argv[1]), atoi(argv[2])));
-		if(resolver(s, atoi(argv[1]), atoi(argv[2])))
+		if(resolver(atoi(argv[1]), atoi(argv[2])))
 			printf("\n\nLaberinto Resuelto!!\n");
 		else
 			printf("\n\nNo se encontro salida ;-;\n");
 	}
 
+    direccionarArchivo();
 	return 0;
 }
 
@@ -61,8 +59,8 @@ void imprime() {
    	int i, j;
 	delay(1);
    	system("clear");
-   	for (i=0; i<ene; i++) {
-     	for (j=0; j<eme; j++) {
+   	for (i=0; i<=ene; i++) {
+     	for (j=0; j<=eme; j++) {
         	 printf("%c ", posic[i][j]);
     	  }
      	printf("\n");
@@ -70,36 +68,35 @@ void imprime() {
    return;
 }
 
-int resolver(Nodo *s, int f, int c  ){
+int resolver(int f, int c  ){
 	 posic[f][c]='x';
 	 push(crearNodo(f, c));
 
-    if( f == 0 || c ==0  || f==ene-1 || c == eme-1 ){//si se esta al borde del arreglo, se encuentra la salida
+    if( f == 0 || c ==0  || f==ene || c == eme ){//si se esta al borde del arreglo, se encuentra la salida
         return 1; 
     }// se prueban las opciones de dirección (arriba, derecha, abajo, izquierda)
     if( posic[f-1][c]=='0'){
-        if( resolver(s,f-1,c)==1 )
+        if( resolver(f-1,c)==1 )
             return 1;
     }
     if( posic[f][c+1]=='0'){
-        if( resolver(s,f,c+1)==1 )//se vuelve a llamar la funcion con un cambio en el parámetro
+        if( resolver(f,c+1)==1 )//se vuelve a llamar la funcion con un cambio en el parámetro
             return 1;
     }
     if( posic[f+1][c]=='0'){
-        if( resolver(s,f+1,c)==1 )
+        if( resolver(f+1,c)==1 )
             return 1;
     }
     if( posic[f][c-1]=='0'){
-        if( resolver(s,f,c-1)==1 )//si se llega al final el valor de retorno es 1, de lo contrario se encerró y el valor es 0
+        if( resolver(f,c-1)==1 )//si se llega al final el valor de retorno es 1, de lo contrario se encerró y el valor es 0
             return 1;
     }
     posic[f][c]='x';
     push(crearNodo(f, c));
-    	direccionarArchivo(s);
     return 0; //Se quedó encerrado, no hay salida
 }
 
-int resolverVerbose(Nodo *s, int f, int c){
+int resolverVerbose(int f, int c){
 	posic[f][c]='x';
 	push(crearNodo(f, c));
     imprime();
@@ -108,34 +105,45 @@ int resolverVerbose(Nodo *s, int f, int c){
         return 1; 
     }// se prueban las opciones de dirección (arriba, derecha, abajo, izquierda)
     if( posic[f-1][c]=='0'){
-        if( resolverVerbose(s,f-1,c)==1 )
+        if( resolverVerbose(f-1,c)==1 )
             return 1;
     }
     if( posic[f][c+1]=='0'){
-        if( resolverVerbose(s,f,c+1)==1 )//se vuelve a llamar la funcion con un cambio en el parámetro
+        if( resolverVerbose(f,c+1)==1 )//se vuelve a llamar la funcion con un cambio en el parámetro
             return 1;
     }
     if( posic[f+1][c]=='0'){
-        if( resolverVerbose(s,f+1,c)==1 )
+        if( resolverVerbose(f+1,c)==1 )
             return 1;
     }
     if( posic[f][c-1]=='0'){
-        if( resolverVerbose(s,f,c-1)==1 )//si se llega al final el valor de retorno es 1, de lo contrario se encerró y el valor es 0
+        if( resolverVerbose(f,c-1)==1 )//si se llega al final el valor de retorno es 1, de lo contrario se encerró y el valor es 0
             return 1;
     }
     posic[f][c]='x';
     push(crearNodo(f, c));
-    direccionarArchivo(s);
     return 0; //Se quedó encerrado, no hay salida
 }
 
-void direccionarArchivo(Nodo *s){
-	FILE *a;
-	f=fopen("salida.txt", "wb");
+void direccionarArchivo(){
+	FILE * a;
+	a=fopen("salida.txt", "w");
+    Nodo **tmp=(Nodo **)malloc(sizeof(Nodo)*ELEMENTOS);
+    int i, constante=ELEMENTOS;
 
-	while(pop(a)!=0){
-	}
+    for(i=0;i<constante;i++){
+        tmp[i]=(Nodo *)malloc(sizeof(Nodo));
+    }
 
+    for(i=0;i<constante;i++){
+        tmp[i]=pop();
+    }
+
+	for (i = constante-1; i >= 0; i--){
+        fprintf(a,"%d  %d,",tmp[i]->x,tmp[i]->y);
+    }
+
+    free(tmp);
 	fclose(a);
 }
 

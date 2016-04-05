@@ -25,6 +25,14 @@ Nodo* crearNodo(int f, int c){
      return nuevo;
 }
 
+void mostrarPila(){
+     Nodo* tmp=tope;
+     while(tmp!=NULL){
+          printf("%d  %d\n",tmp->x,tmp->y);
+          tmp=tmp->ap;
+     }
+}
+
 enum boolean push(Nodo* nodo){
      if(ELEMENTOS==MAXIMO)
           return false;
@@ -36,17 +44,16 @@ enum boolean push(Nodo* nodo){
      }
 }
 
-int pop(FILE *f){
+Nodo* pop(){
      if(tope==NULL)
-          return 0;
+          return NULL;
      else{
           Nodo* tmp;
           tmp=tope;
           tope=tope->ap;
           tmp->ap=NULL;          
           ELEMENTOS--;
-          fprintf(f,"%d   %d,",tmp->x, tmp->y);
-          return 1;
+          return tmp;
      }
 }
 
