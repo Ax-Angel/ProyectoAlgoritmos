@@ -1,7 +1,7 @@
 #include "pila.h"
 #include <time.h>
 #include <string.h>
-#define archivo "ejemploMediano.txt"
+#define archivo "ejemploLaberinto.txt"
 
 void cualDimension();
 char **creaMatriz(int ene, int eme);
@@ -46,6 +46,7 @@ int main(int argc, char const *argv[])
 	}
 
     direccionarArchivo();
+    free(posic);
 	return 0;
     }
 }
@@ -107,7 +108,7 @@ int resolverVerbose(int f, int c){
 	push(crearNodo(f, c));
     imprime();
 
-    if( f == 0 || c ==0  || f==ene-1 || c == eme-1 ){//si se esta al borde del arreglo, se encuentra la salida
+    if( f == 0 || c ==0  || f==ene || c == eme ){//si se esta al borde del arreglo, se encuentra la salida
         return 1; 
     }// se prueban las opciones de dirección (arriba, derecha, abajo, izquierda)
     if( posic[f-1][c]=='0'){
