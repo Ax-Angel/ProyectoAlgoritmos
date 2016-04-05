@@ -19,6 +19,11 @@ void direccionarArchivo();
 
 int main(int argc, char const *argv[])
 {
+    if(argc==1){
+        printf("\n\t\tPara poder ejecutar correctamente el programa, debes especificar\n\t\tel punto de inicio en el laberinto, y ademas puedes activar el modo verbose \n\t\tque te muestra como se va resolviendo el laberinto en tiempo real.\n\n\t\t Ejemplos: ./a.out 1 1   o  ./a.out v 1 1\n");
+        return 0;
+    }
+    else{
     cualDimension();
     posic=creaMatriz(ene,ene);
     guardaLaberinto();
@@ -42,6 +47,7 @@ int main(int argc, char const *argv[])
 
     direccionarArchivo();
 	return 0;
+    }
 }
 
 void delay (int seg)
